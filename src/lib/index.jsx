@@ -1,18 +1,41 @@
-import React, { Component } from "react";
+import React from 'react';
+import * as JsDiff from 'diff';
 
-class MySuperCoolComponent extends Component {
-  handleClick = () => {
-    console.log("Click!");
-  };
+const types = {
+    chars: 'chars',
+    words: 'words',
+    sentences: 'sentences',
+    json: 'json'
+};
 
-  render() {
-    const { color, children } = this.props;
+const fnMap = {
+    'chars': JsDiff.diffChars,
+    'words': JsDiff.diffWords,
+    'sentences': JsDiff.diffSentences,
+    'json': JsDiff.diffJson
+};
+
+const Diff = ({ inputA, inputB, type }) => {
+    const diff = fnMap[type](inputA, inputB);
+    const result = diff.map(function(part, index) {
+        const spanStyle = {
+            backgroundColor: part.added ? 'lightgreen' : part.removed ? 'salmon' : 'lightgrey'
+        };
+        return <span key={index} style={spanStyle}>{part.value}</span>
+    });
     return (
-      <button onClick={this.handleClick} style={{ color }}>
-        {children}
-      </button>
+        <pre className='diff-result'>
+        {result}
+      </pre>
     );
-  }
-}
+};
 
-export default MySuperCoolComponent;
+Diff.defaultProps = {
+    inputA: '',
+    inputB: '',
+    type: 'chars'
+};
+
+Diff.types = types;
+
+export default Diff;
