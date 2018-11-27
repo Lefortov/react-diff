@@ -1,5 +1,6 @@
 import React from 'react';
 import * as JsDiff from 'diff';
+import './styles.css';
 
 const types = {
     chars: 'chars',
@@ -15,13 +16,40 @@ const fnMap = {
     'json': JsDiff.diffJson
 };
 
+const getRemovedRow = (index, value) => (
+    <div key={index} className="diff-row">
+        <div className="diff-index diff-index_removed">{index}</div>
+        <div className="diff-index diff-index_removed" />
+        <div className="diff-value_removed">-</div>
+        <div className="diff-value_removed">{value}</div>
+    </div>
+);
+
+const getAddedRow = (index, value) => (
+    <div key={index} className="diff-row">
+        <div className="diff-index diff-index_added" />
+        <div className="diff-index diff-index_added">{index}</div>
+        <div className="diff-value_added">+</div>
+        <div className="diff-value_added">{value}</div>
+    </div>
+);
+
+const getUntouchedRow = (index, value) => (
+    <div key={index} className="diff-row">
+        <div className="diff-index diff-index_unchecked">{index}</div>
+        <div className="diff-index diff-index_unchecked">{index}</div>
+        <div>{value}</div>
+    </div>
+);
+
 const Diff = ({ inputA, inputB, type }) => {
     const diff = fnMap[type](inputA, inputB);
-    const result = diff.map(function(part, index) {
-        const spanStyle = {
-            backgroundColor: part.added ? 'lightgreen' : part.removed ? 'salmon' : 'lightgrey'
-        };
-        return <span key={index} style={spanStyle}>{part.value}</span>
+    const result = diff.map((part, index) => {
+        return part.added ?
+            getAddedRow(index + 1, part.value) :
+            part.removed ?
+                getRemovedRow(index + 1, part.value) :
+                getUntouchedRow(index + 1, part.value);
     });
     return (
         <pre className='diff-result'>
@@ -38,4 +66,4 @@ Diff.defaultProps = {
 
 Diff.types = types;
 
-export default Diff;
+export { Diff as default };
