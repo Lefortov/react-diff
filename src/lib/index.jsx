@@ -52,8 +52,8 @@ const getUntouchedRow = (index, value) => (
     </div>
 );
 
-const Diff = ({ inputA, inputB, type }) => {
-    const diff = fnMap[type](inputA, inputB);
+const Diff = ({ inputA, inputB, type, options }) => {
+    const diff = fnMap[type](inputA, inputB, options);
     const result = diff.map((part, index) => {
         return part.added ?
             getAddedRow(index + 1, part.value) :
