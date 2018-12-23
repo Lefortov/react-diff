@@ -1,10 +1,10 @@
 {
   "name": "react-diff-component",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "React diff string component",
   "main": "lib/index.js",
   "scripts": {
-    "dev": "concurrently \"npm run lib:watch\" \"npm run docs\"",
+    "dev": "concurrently \"npmnp run lib:watch\" \"npm run docs\"",
     "lib": "babel src/lib -d lib --copy-files",
     "lib:watch": "babel src/lib -w -d lib --copy-files",
     "docs": "webpack-dev-server --mode development",

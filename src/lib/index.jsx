@@ -6,14 +6,24 @@ const types = {
     chars: 'chars',
     words: 'words',
     sentences: 'sentences',
-    json: 'json'
+    json: 'json',
+    lines: 'lines',
+    wordsWithSpace: 'wordsWithSpace',
+    trimmedLines: 'trimmedLines',
+    css: 'css',
+    arrays: 'arrays'
 };
 
 const fnMap = {
     'chars': JsDiff.diffChars,
     'words': JsDiff.diffWords,
     'sentences': JsDiff.diffSentences,
-    'json': JsDiff.diffJson
+    'json': JsDiff.diffJson,
+    'lines': JsDiff.diffLines,
+    'wordsWithSpace': JsDiff.diffWordsWithSpace,
+    'trimmedLines': JsDiff.diffTrimmedLines,
+    'css': JsDiff.diffCss,
+    'arrays': JsDiff.diffArrays
 };
 
 const getRemovedRow = (index, value) => (
