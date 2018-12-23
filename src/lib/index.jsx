@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {Fragment} from 'react';
 import * as JsDiff from 'diff';
 import './styles.css';
 
@@ -26,40 +26,59 @@ const fnMap = {
     'arrays': JsDiff.diffArrays
 };
 
-const getRemovedRow = (index, value) => (
-    <div key={index} className="diff-row">
-        <div className="diff-index diff-index_removed">{index}</div>
-        <div className="diff-index diff-index_removed" />
-        <div className="diff-value_removed">-</div>
-        <div className="diff-value_removed">{value}</div>
-    </div>
-);
+let index = 0;
 
-const getAddedRow = (index, value) => (
-    <div key={index} className="diff-row">
-        <div className="diff-index diff-index_added" />
-        <div className="diff-index diff-index_added">{index}</div>
-        <div className="diff-value_added">+</div>
-        <div className="diff-value_added">{value}</div>
-    </div>
-);
+const getRowId = () => Math.floor(Math.random() * (9999999-1)) + 1;
 
-const getUntouchedRow = (index, value) => (
-    <div key={index} className="diff-row">
-        <div className="diff-index diff-index_unchecked">{index}</div>
-        <div className="diff-index diff-index_unchecked">{index}</div>
-        <div>{value}</div>
-    </div>
-);
+const getRemovedRow = (value) => {
+    index += 1;
+    return (
+        <div key={getRowId()} className="diff-row">
+            <div className="diff-index diff-index_removed">{index}</div>
+            <div className="diff-index diff-index_removed" />
+            <div className="diff-value_removed">-</div>
+            <div className="diff-value_removed">{value}</div>
+        </div>
+    );
+};
+
+const getAddedRow = (value) => {
+    index += 1;
+    return (
+        <div key={getRowId()} className="diff-row">
+            <div className="diff-index diff-index_added" />
+            <div className="diff-index diff-index_added">{index}</div>
+            <div className="diff-value_added">+</div>
+            <div className="diff-value_added">{value}</div>
+        </div>
+    );
+};
+
+const getUntouchedRow = (value) => {
+    const rows = value.split('\n');
+    return <Fragment key={getRowId()}>
+        {rows.map((line) => {
+            index += 1;
+            return (
+                <div key={getRowId()} className="diff-row">
+                    <div className="diff-index diff-index_unchecked">{index}</div>
+                    <div className="diff-index diff-index_unchecked">{index}</div>
+                    <div>{line}</div>
+                </div>
+            )
+          })
+        }
+    </Fragment>
+};
 
 const Diff = ({ inputA, inputB, type, options }) => {
     const diff = fnMap[type](inputA, inputB, options);
-    const result = diff.map((part, index) => {
+    const result = diff.map((part) => {
         return part.added ?
-            getAddedRow(index + 1, part.value) :
+            getAddedRow(part.value) :
             part.removed ?
-                getRemovedRow(index + 1, part.value) :
-                getUntouchedRow(index + 1, part.value);
+                getRemovedRow(part.value) :
+                getUntouchedRow(part.value);
     });
     return (
         <pre className='diff-result'>
