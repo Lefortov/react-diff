@@ -71,15 +71,21 @@ const getUntouchedRow = (value) => {
     </Fragment>
 };
 
-const Diff = ({ inputA, inputB, type, options }) => {
+const Diff = ({ inputA, inputB, type, highlight, options }) => {
     index = 0;
     const diff = fnMap[type](inputA, inputB, options);
-    const result = diff.map((part) => {
+    const result = diff.map((part, index) => {
+      if(highlight){ 
+        var className = part.added ? 'lightgreen' : part.removed ? 'salmon' : 'lightgrey';
+        return React.createElement('span', { key: index, className: className }, part.value);
+       } 
+       else{
         return part.added ?
             getAddedRow(part.value) :
             part.removed ?
                 getRemovedRow(part.value) :
                 getUntouchedRow(part.value);
+                }
     });
     return (
         <pre className='diff-result'>
@@ -91,7 +97,8 @@ const Diff = ({ inputA, inputB, type, options }) => {
 Diff.defaultProps = {
     inputA: '',
     inputB: '',
-    type: 'chars'
+    type: 'chars',
+    highlight: true
 };
 
 Diff.types = types;
