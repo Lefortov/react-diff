@@ -1,6 +1,6 @@
 # react-diff-component
 
-Highlights differences between two strings, uses the [diff](https://www.npmjs.com/package/diff) module based on (https://github.com/cezary/react-diff)
+Highlights differences between two strings, uses the [diff](https://www.npmjs.com/package/diff) module based on (https://github.com/Lefortov/react-diff)
 
 ## Installation
 
